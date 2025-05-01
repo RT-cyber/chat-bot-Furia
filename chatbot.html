@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chatbot FURIA CS - Experiência Conversacional</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #121212;
+    color: #eee;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+  }
+  h1 {
+    margin-bottom: 0.3em;
+    color: #f44336;
+  }
+  #chatbox {
+    width: 100%;
+    max-width: 480px;
+    height: 600px;
+    border: 2px solid #f44336;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    background: #1e1e1e;
+  }
+  #messages {
+    flex-grow: 1;
+    padding: 1em;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #f44336 #1e1e1e;
+  }
+  #messages::-webkit-scrollbar {
+    width: 8px;
+  }
+  #messages::-webkit-scrollbar-thumb {
+    background-color: #f44336;
+    border-radius: 4px;
+  }
+  .message {
+    margin-bottom: 1em;
+    max-width: 80%;
+    padding: 0.7em 1em;
+    border-radius: 15px;
+    line-height: 1.3;
+  }
+  .user {
+    background-color: #f44336;
+    color: white;
+    margin-left: auto;
+    text-align: right;
+  }
+  .bot {
+    background-color: #333333;
+    color: #eee;
+    margin-right: auto;
+    text-align: left;
+  }
+  #input-area {
+    display: flex;
+    border-top: 2px solid #f44336;
+  }
+  #user-input {
+    flex-grow: 1;
+    border: none;
+    font-size: 1.1em;
+    padding: 0.6em 1em;
+    background: #121212;
+    color: #eee;
+    border-radius: 0 0 0 10px;
+  }
+  #user-input:focus {
+    outline: none;
+  }
+  #send-btn {
+    border: none;
+    background: #f44336;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 0 1.5em;
+    cursor: pointer;
+    border-radius: 0 0 10px 0;
+  }
+  #send-btn:active {
+    background: #d32f2f;
+  }
+  .footer {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 0.5em;
+  }
+</style>
+</head>
+<body>
+<h1>Chatbot FURIA CS</h1>
+<div id="chatbox" role="main" aria-live="polite">
+  <div id="messages" aria-label="Área de mensagens do chat">
+    <div class="message bot">Olá, sou o assistente FURIA! Pergunte-me sobre o time de CS:GO da FURIA. Exemplo: "Quando é o próximo jogo?"</div>
+  </div>
+  <form id="input-area" aria-label="Formulário para enviar mensagens">
+    <input id="user-input" type="text" placeholder="Digite sua mensagem..." aria-label="Digite sua mensagem" autocomplete="off" required />
+    <button id="send-btn" type="submit" aria-label="Enviar mensagem">Enviar</button>
+  </form>
+</div>
+<div class="footer">Powered by FURIA Fan Experience</div>
+
+<script>
+  const chatMessages = document.getElementById('messages');
+  const form = document.getElementById('input-area');
+  const input = document.getElementById('user-input');
+
+  function addMessage(content, sender) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'message ' + sender;
+    msgDiv.textContent = content;
+    chatMessages.appendChild(msgDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function botResponse(userText) {
+    const text = userText.toLowerCase();
+
+    // Respostas simples baseadas em palavras-chave
+    if (text.includes('próximo jogo') || text.includes('quando é o próximo jogo')) {
+      return 'O próximo jogo da FURIA é dia 20/07 contra a Team Liquid no ESL Pro League.';
+    }
+    if (text.includes('resultado')) {
+      return 'No último jogo, a FURIA venceu a FaZe Clan por 2-1. Foi uma partida emocionante!';
+    }
+    if (text.includes('jogadores') || text.includes('time')) {
+      return 'O time atual conta com: arT, yuurih, KSCERATO, VINI e arTiz.';
+    }
+    if (text.includes('história') || text.includes('fundação')) {
+      return 'A FURIA foi fundada em 2017 e rapidamente se tornou um dos maiores times de CS:GO do Brasil.';
+    }
+    if (text.includes('evento') || text.includes('torneio')) {
+      return 'A FURIA participa de diversos torneios internacionais, como ESL, BLAST e PGL.';
+    }
+    if (text.includes('merchandise') || text.includes('loja') || text.includes('produto')) {
+      return 'Você pode encontrar produtos oficiais da FURIA em: https://furia.gg/store';
+    }
+    if (text.includes('oi') || text.includes('olá') || text.includes('fala')) {
+      return 'Olá, fã da FURIA! Como posso ajudar você hoje?';
+    }
+    if (text.includes('obrigado') || text.includes('valeu')) {
+      return 'De nada! Sempre aqui para ajudar você a apoiar a FURIA!';
+    }
+    return 'Desculpe, não entendi. Pergunte-me sobre o próximo jogo, resultados ou jogadores da FURIA.';
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const userText = input.value.trim();
+    if (userText === '') return;
+
+    addMessage(userText, 'user');
+    input.value = '';
+
+    // Simular "pensamento" com delay para resposta do bot
+    setTimeout(() => {
+      const response = botResponse(userText);
+      addMessage(response, 'bot');
+    }, 700);
+  });
+
+  // Auto foco no input ao carregar a página
+  window.onload = () => {
+    input.focus();
+  };
+</script>
+</body>
+</html>
