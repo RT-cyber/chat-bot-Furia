@@ -1,5 +1,8 @@
 # chat-bot-Furia
 
+![image](https://github.com/user-attachments/assets/4cb17b98-7801-4f35-9649-c5fe518fc9ea)
+
+
 ## _Chatbot FURIA CS - Experiência Conversacional_
 
 Este projeto é um chatbot simples e funcional para fãs do time de CS:GO da FURIA. Construído como uma landing page HTML, ele oferece uma interface conversacional para responder perguntas frequentes sobre o time, seus jogadores, próximos jogos, resultados e loja oficial.
